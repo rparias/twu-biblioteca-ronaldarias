@@ -56,4 +56,25 @@ public class MenuTest {
         // Then - Assert
         assertThat(title, is("List of Books"));
     }
+
+    @Test
+    public void shouldReturnNotificationWhenChoseInvalidOption() throws IOException {
+        // Given - Arrange
+        Option option = new Option(1, "List of Books");
+        options.put("1", option);
+
+        // When - Act
+        when(bufferedReader.readLine()).thenReturn("0");
+        Option selectedOption = menu.findOptionFromNumber();
+        String title;
+
+        if (selectedOption != null) {
+            title = menu.findOptionFromNumber().getTitleOption();
+        } else {
+            title = "Please select a valid option";
+        }
+
+        // Then - Assert
+        assertThat(title, is("Please select a valid option"));
+    }
 }

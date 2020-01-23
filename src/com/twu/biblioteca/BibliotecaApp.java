@@ -27,6 +27,7 @@ public class BibliotecaApp {
         if (option != null) {
             selectOptionFromUser(option);
         } else {
+            System.out.println("Please select a valid option\n");
             displayMenu();
         }
     }
