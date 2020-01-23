@@ -13,13 +13,13 @@ import java.util.List;
 
 public class LibraryTest {
 
-    private List<String> books;
+    private List<Book> books;
     private Library library;
     private PrintStream printStream;
 
     @Before
     public void setUp() throws Exception {
-        books = new ArrayList<String>();
+        books = new ArrayList<Book>();
         printStream = mock(PrintStream.class);
         library = new Library(books, printStream);
     }
@@ -27,15 +27,13 @@ public class LibraryTest {
     @Test
     public void shouldPrintAListOfAllLibraryBooks() {
         // Given - Arrange
-        String book1 = "Test Driven Development by Example";
-        String book2 = "Clean Code";
+        Book book1 = new Book("Clean Code", "Robert Martin", 2010);
         books.add(book1);
-        books.add(book2);
 
         // When - Act
         library.listBooks();
 
         // Then - Assert
-        verify(printStream).println("Test Driven Development by Example\nClean Code\n");
+        verify(printStream).println("Clean Code                         Robert Martin            2010\n");
     }
 }
