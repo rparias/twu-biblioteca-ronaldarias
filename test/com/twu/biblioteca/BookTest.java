@@ -13,7 +13,7 @@ public class BookTest {
         String title = "Clean Code";
         String author = "Robert Martin";
         int year = 2010;
-        Book book = new Book(title, author, year);
+        BookImp book = new BookImp(title, author, year);
 
         // When - Act
         String bookInfo = book.printTitleAuthorAndYearBook();

@@ -1,5 +1,7 @@
 package com.twu.biblioteca;
 
+import com.twu.biblioteca.interfaces.Book;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -41,6 +43,9 @@ public class BibliotecaApp {
             case 1:
                 displayListOfBooks();
                 break;
+            case 2:
+                checkOutBook();
+                break;
             case 9:
                 quitApplication();
                 break;
@@ -52,21 +57,28 @@ public class BibliotecaApp {
 
     private static void displayListOfBooks() {
         System.out.printf("\n%-35s%-25s%-4s\n\n", "TITLE", "AUTHOR", "YEAR");
-        Library library = new Library(books(), System.out);
-        library.listBooks();
+        LibraryImp library = LibraryImp.getInstanceLibrary(books(), System.out, new BufferedReader(new InputStreamReader(System.in)));
+        library.printAvailableBooks();
+    }
+
+    private static void checkOutBook() {
+        displayListOfBooks();
+        LibraryImp library = LibraryImp.getInstanceLibrary(books(), System.out, new BufferedReader(new InputStreamReader(System.in)));
+        Book book = library.enterBookName();
     }
 
     private static List<Book> books() {
         List<Book> books = new ArrayList<Book>();
-        books.add(new Book("Clean Code", "Robert Martin", 2010));
-        books.add(new Book("TDD by Example", "Kent Beck", 2008));
-        books.add(new Book("Clean Architecture", "Robert Martin", 2014));
+        books.add(new BookImp("Clean Code", "Robert Martin", 2010));
+        books.add(new BookImp("TDD by Example", "Kent Beck", 2008));
+        books.add(new BookImp("Clean Architecture", "Robert Martin", 2014));
         return books;
     }
 
     private static Map<Integer, String> options() {
         Map<Integer, String> options = new HashMap<Integer, String>();
         options.put(1, "List of Books");
+        options.put(2, "Checkout a book");
         options.put(9, "Quit");
         return options;
     }
