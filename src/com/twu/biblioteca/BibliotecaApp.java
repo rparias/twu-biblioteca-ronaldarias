@@ -41,6 +41,9 @@ public class BibliotecaApp {
             case 1:
                 displayListOfBooks();
                 break;
+            case 9:
+                quitApplication();
+                break;
             default:
                 showErrorMessage();
                 break;
@@ -64,6 +67,11 @@ public class BibliotecaApp {
     private static Map<Integer, String> options() {
         Map<Integer, String> options = new HashMap<Integer, String>();
         options.put(1, "List of Books");
+        options.put(9, "Quit");
         return options;
+    }
+
+    private static void quitApplication() {
+        System.exit(0);
     }
 }
