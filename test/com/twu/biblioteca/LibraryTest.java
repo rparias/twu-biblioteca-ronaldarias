@@ -2,14 +2,13 @@ package com.twu.biblioteca;
 
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.assertThat;
-import static org.hamcrest.core.IsCollectionContaining.hasItems;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 public class LibraryTest {
 

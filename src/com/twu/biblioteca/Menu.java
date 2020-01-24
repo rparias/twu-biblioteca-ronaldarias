@@ -1,17 +1,16 @@
 package com.twu.biblioteca;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Map;
 
 public class Menu {
 
-    private Map<String, Option> options;
+    private Map<Integer, String> options;
     private PrintStream printStream;
     BufferedReader bufferedReader;
 
-    public Menu(Map<String, Option> options, PrintStream printStream, BufferedReader bufferedReader) {
+    public Menu(Map<Integer, String> options, PrintStream printStream, BufferedReader bufferedReader) {
         this.options = options;
         this.printStream = printStream;
         this.bufferedReader = bufferedReader;
@@ -20,23 +19,22 @@ public class Menu {
 
     public void listOptions() {
         String optionList = "";
-        for (Option option: options.values()) {
-            optionList += option + "\n";
+        for (Map.Entry<Integer, String> entry : options.entrySet()) {
+            optionList += entry.getKey() + " --> " + entry.getValue() + "\n";
         }
         printStream.println(optionList);
     }
 
-    public Option findOptionFromNumber() {
-        Option option = options.get(readLine());
-        return option;
+    public int findOptionFromNumber() {
+        return readNumber();
     }
 
-    private String readLine() {
-        String option = null;
+    private Integer readNumber() {
+        int option = 0;
         try {
-            option = bufferedReader.readLine();
-        } catch (IOException e) {
-            e.printStackTrace();
+            option = Integer.parseInt(bufferedReader.readLine());
+        } catch (Exception ignored) {
+
         }
         return option;
     }

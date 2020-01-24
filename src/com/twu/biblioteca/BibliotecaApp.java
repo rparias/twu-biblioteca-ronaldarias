@@ -23,22 +23,26 @@ public class BibliotecaApp {
         validateOption(menu.findOptionFromNumber());
     }
 
-    private static void validateOption(Option option) {
-        if (option != null) {
-            selectOptionFromUser(option);
+    private static void validateOption(int option) {
+        if (option == 0) {
+            showErrorMessage();
         } else {
-            System.out.println("Please select a valid option\n");
-            displayMenu();
+            selectOptionFromUser(option);
         }
     }
 
-    private static void selectOptionFromUser(Option option) {
-        switch (option.getNumberOption()) {
+    private static void showErrorMessage() {
+        System.out.println("Please select a valid option\n");
+        displayMenu();
+    }
+
+    private static void selectOptionFromUser(int numberOption) {
+        switch (numberOption) {
             case 1:
                 displayListOfBooks();
                 break;
             default:
-                System.out.println("Wrong option");
+                showErrorMessage();
                 break;
         }
     }
@@ -57,9 +61,9 @@ public class BibliotecaApp {
         return books;
     }
 
-    private static Map<String, Option> options() {
-        Map<String, Option> options = new HashMap<String, Option>();
-        options.put("1", new Option(1, "List of Books"));
+    private static Map<Integer, String> options() {
+        Map<Integer, String> options = new HashMap<Integer, String>();
+        options.put(1, "List of Books");
         return options;
     }
 }
