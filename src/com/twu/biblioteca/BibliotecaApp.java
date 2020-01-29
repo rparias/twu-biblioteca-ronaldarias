@@ -66,13 +66,8 @@ public class BibliotecaApp {
         displayListOfBooks();
         LibraryImp library = LibraryImp.getInstanceLibrary(books(), System.out, new BufferedReader(new InputStreamReader(System.in)));
         Book book = library.enterBookName();
-        if (book != null) {
-            library.checkoutBook(book);
-            displayMenu();
-        } else {
-            showErrorMessage();
-        }
-
+        library.checkoutBook(book);
+        displayMenu();
     }
 
     private static List<Book> books() {

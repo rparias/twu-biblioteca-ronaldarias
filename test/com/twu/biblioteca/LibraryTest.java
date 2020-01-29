@@ -133,4 +133,20 @@ public class LibraryTest {
         // Then - Assert
         verify(printStream).println("Thank you! Enjoy the book\n");
     }
+
+    @Test
+    public void shouldDisplayUnsuccessMessageOnCheckOutOfABook() {
+        // Given - Arrange
+        Book book1 = new BookImp("Clean Code", "Robert Martin", 2010);
+        book1.setAvailability(false);
+        Book book2 = new BookImp("TDD by Example", "Kent Beck", 2008);
+        books.add(book1);
+        books.add(book2);
+
+        // When - Act
+        library.checkoutBook(null);
+
+        // Then - Assert
+        verify(printStream).println("Sorry, that book is not available\n");
+    }
 }

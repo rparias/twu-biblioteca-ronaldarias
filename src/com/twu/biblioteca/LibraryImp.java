@@ -58,9 +58,19 @@ public class LibraryImp implements Library, Printer {
 
     @Override
     public void checkoutBook(Book book) {
+        if (book != null) {
+            changeBookAvailiability(book);
+        } else {
+            showUnsuccessMessageCheckout();
+        }
+    }
+
+    private void changeBookAvailiability(Book book) {
         if (book.isAvailable()) {
             book.setAvailability(false);
             showSuccessMessageCheckout();
+        } else {
+            showUnsuccessMessageCheckout();
         }
     }
 
@@ -110,5 +120,9 @@ public class LibraryImp implements Library, Printer {
 
     private void showSuccessMessageCheckout() {
         printStream.println("Thank you! Enjoy the book\n");
+    }
+
+    private void showUnsuccessMessageCheckout() {
+        printStream.println("Sorry, that book is not available\n");
     }
 }
