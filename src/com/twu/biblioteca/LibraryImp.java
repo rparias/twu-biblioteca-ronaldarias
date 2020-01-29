@@ -59,13 +59,13 @@ public class LibraryImp implements Library, Printer {
     @Override
     public void checkoutBook(Book book) {
         if (book != null) {
-            changeBookAvailiability(book);
+            changeBookToCheckedOut(book);
         } else {
             showUnsuccessMessageCheckout();
         }
     }
 
-    private void changeBookAvailiability(Book book) {
+    private void changeBookToCheckedOut(Book book) {
         if (book.isAvailable()) {
             book.setAvailability(false);
             showSuccessMessageCheckout();
@@ -76,11 +76,28 @@ public class LibraryImp implements Library, Printer {
 
     @Override
     public void returnBook(Book book) {
+        if (book != null) {
+            changeBookToAvailable(book);
+        } else {
+            showUnsuccessMessageReturn();
+        }
+    }
 
+    private void changeBookToAvailable(Book book) {
+        if (!book.isAvailable()) {
+            book.setAvailability(true);
+            showSuccessMessageOnReturn();
+        } else {
+            showUnsuccessMessageReturn();
+        }
     }
 
     public void printAvailableBooks() {
         displayBooks(listAvailableBooks());
+    }
+
+    public void printCheckedOutBooks() {
+        displayBooks(listCheckedOutBooks());
     }
 
     @Override
@@ -93,7 +110,7 @@ public class LibraryImp implements Library, Printer {
     }
 
     public Book enterBookName() {
-        printStream.println("Please enter book name for checkout");
+        printStream.println("Please enter book name");
         String bookName = readLine();
         return findBookByName(bookName);
     }
@@ -101,7 +118,7 @@ public class LibraryImp implements Library, Printer {
     @Override
     public Book findBookByName(String name) {
         Book foundBook = null;
-        for (Book book: listAvailableBooks()) {
+        for (Book book: listAllBooks()) {
             if (book.getTitle().equals(name))
                 foundBook = book;
         }
@@ -124,5 +141,13 @@ public class LibraryImp implements Library, Printer {
 
     private void showUnsuccessMessageCheckout() {
         printStream.println("Sorry, that book is not available\n");
+    }
+
+    private void showSuccessMessageOnReturn() {
+        printStream.println("Thank you for returning the book\n");
+    }
+
+    private void showUnsuccessMessageReturn() {
+        printStream.println("That is not a valid book to return\n");
     }
 }

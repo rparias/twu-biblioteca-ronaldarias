@@ -9,7 +9,9 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.core.IsCollectionContaining.hasItems;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
@@ -148,5 +150,67 @@ public class LibraryTest {
 
         // Then - Assert
         verify(printStream).println("Sorry, that book is not available\n");
+    }
+
+    @Test
+    public void shouldListOnlyCheckedOutBooks() {
+        // Given - Arrange
+        Book book1 = new BookImp("Clean Code", "Robert Martin", 2010);
+        Book book2 = new BookImp("TDD by Example", "Kent Beck", 2008);
+        books.add(book1);
+        books.add(book2);
+
+        // When - Act
+        library.checkoutBook(book1);
+        List<Book> unavailableBooks = library.listCheckedOutBooks();
+
+        // Then - Assert
+        assertThat(unavailableBooks, hasItems(book1));
+        assertThat(unavailableBooks, not(hasItems(book2)));
+    }
+
+    @Test
+    public void shouldReturnTrueInAvailabilityWhenBookIsReturned() {
+        // Given - Arrange
+        Book book = new BookImp("Clean Code", "Robert Martin", 2010);
+        book.setAvailability(false);
+        books.add(book);
+
+        // When - Act
+        library.returnBook(book);
+
+        // Then - Assert
+        assertThat(book.isAvailable(), is(true));
+    }
+
+    @Test
+    public void shouldDisplaySuccessMessageOnSuccessfulReturn() {
+        // Given - Arrange
+        Book book1 = new BookImp("Clean Code", "Robert Martin", 2010);
+        book1.setAvailability(false);
+        Book book2 = new BookImp("TDD by Example", "Kent Beck", 2008);
+        books.add(book1);
+        books.add(book2);
+
+        // When - Act
+        library.returnBook(book1);
+
+        // Then - Assert
+        verify(printStream).println("Thank you for returning the book\n");
+    }
+
+    @Test
+    public void shouldDisplayUnsuccessfulMessageOnUnsuccessfulReturn() {
+        // Given - Arrange
+        Book book1 = new BookImp("Clean Code", "Robert Martin", 2010);
+        Book book2 = new BookImp("TDD by Example", "Kent Beck", 2008);
+        books.add(book1);
+        books.add(book2);
+
+        // When - Act
+        library.returnBook(null);
+
+        // Then - Assert
+        verify(printStream).println("That is not a valid book to return\n");
     }
 }

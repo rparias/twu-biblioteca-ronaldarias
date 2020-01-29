@@ -41,11 +41,14 @@ public class BibliotecaApp {
     private static void selectOptionFromUser(int numberOption) {
         switch (numberOption) {
             case 1:
-                displayListOfBooks();
+                displayListOfAvailableBooks();
                 displayMenu();
                 break;
             case 2:
                 checkOutBook();
+                break;
+            case 3:
+                returnBook();
                 break;
             case 9:
                 quitApplication();
@@ -56,17 +59,31 @@ public class BibliotecaApp {
         }
     }
 
-    private static void displayListOfBooks() {
-        System.out.printf("\n%-35s%-25s%-4s\n\n", "TITLE", "AUTHOR", "YEAR");
+    private static void displayListOfAvailableBooks() {
+        showHeaderWithTitleAuthorAndYear();
         LibraryImp library = LibraryImp.getInstanceLibrary(books(), System.out, new BufferedReader(new InputStreamReader(System.in)));
         library.printAvailableBooks();
     }
 
+    private static void displayListOfCheckecOutBooks() {
+        showHeaderWithTitleAuthorAndYear();
+        LibraryImp library = LibraryImp.getInstanceLibrary(books(), System.out, new BufferedReader(new InputStreamReader(System.in)));
+        library.printCheckedOutBooks();
+    }
+
     private static void checkOutBook() {
-        displayListOfBooks();
+        displayListOfAvailableBooks();
         LibraryImp library = LibraryImp.getInstanceLibrary(books(), System.out, new BufferedReader(new InputStreamReader(System.in)));
         Book book = library.enterBookName();
         library.checkoutBook(book);
+        displayMenu();
+    }
+
+    private static void returnBook() {
+        displayListOfCheckecOutBooks();
+        LibraryImp library = LibraryImp.getInstanceLibrary(books(), System.out, new BufferedReader(new InputStreamReader(System.in)));
+        Book book = library.enterBookName();
+        library.returnBook(book);
         displayMenu();
     }
 
@@ -82,6 +99,7 @@ public class BibliotecaApp {
         Map<Integer, String> options = new HashMap<Integer, String>();
         options.put(1, "List of Books");
         options.put(2, "Checkout a book");
+        options.put(3, "Return a book");
         options.put(9, "Quit");
         return options;
     }
@@ -92,5 +110,9 @@ public class BibliotecaApp {
 
     private static void showMessage(String message) {
         System.out.println(message + "\n");
+    }
+
+    private static void showHeaderWithTitleAuthorAndYear() {
+        System.out.printf("\n%-35s%-25s%-4s\n\n", "TITLE", "AUTHOR", "YEAR");
     }
 }
