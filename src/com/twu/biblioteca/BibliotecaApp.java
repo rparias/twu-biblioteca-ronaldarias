@@ -12,7 +12,7 @@ import java.util.Map;
 public class BibliotecaApp {
 
     public static void main(String[] args) {
-        System.out.println("Welcome to Biblioteca. Your one-stop-shop for great book titles in Bangalore!\n");
+        showMessage("Welcome to Biblioteca. Your one-stop-shop for great book titles in Bangalore!");
 
         displayMenu();
     }
@@ -21,7 +21,7 @@ public class BibliotecaApp {
         Menu menu = new Menu(options(), System.out, new BufferedReader(new InputStreamReader(System.in)));
         menu.listOptions();
 
-        System.out.println("Enter a number option from menu");
+        showMessage("Enter a number option from menu");
         validateOption(menu.findOptionFromNumber());
     }
 
@@ -34,7 +34,7 @@ public class BibliotecaApp {
     }
 
     private static void showErrorMessage() {
-        System.out.println("Please select a valid option\n");
+        showMessage("Please select a valid option");
         displayMenu();
     }
 
@@ -42,6 +42,7 @@ public class BibliotecaApp {
         switch (numberOption) {
             case 1:
                 displayListOfBooks();
+                displayMenu();
                 break;
             case 2:
                 checkOutBook();
@@ -65,6 +66,13 @@ public class BibliotecaApp {
         displayListOfBooks();
         LibraryImp library = LibraryImp.getInstanceLibrary(books(), System.out, new BufferedReader(new InputStreamReader(System.in)));
         Book book = library.enterBookName();
+        if (book != null) {
+            library.checkoutBook(book);
+            displayMenu();
+        } else {
+            showErrorMessage();
+        }
+
     }
 
     private static List<Book> books() {
@@ -85,5 +93,9 @@ public class BibliotecaApp {
 
     private static void quitApplication() {
         System.exit(0);
+    }
+
+    private static void showMessage(String message) {
+        System.out.println(message + "\n");
     }
 }

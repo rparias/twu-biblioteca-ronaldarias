@@ -1,7 +1,6 @@
 package com.twu.biblioteca;
 
 import com.twu.biblioteca.interfaces.Book;
-import com.twu.biblioteca.interfaces.Library;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -118,5 +117,20 @@ public class LibraryTest {
 
         // Then - Assert
         assertThat(book, is(nullValue()));
+    }
+
+    @Test
+    public void shouldDisplaySuccessMessageOnCheckOutOfABook() {
+        // Given - Arrange
+        Book book1 = new BookImp("Clean Code", "Robert Martin", 2010);
+        Book book2 = new BookImp("TDD by Example", "Kent Beck", 2008);
+        books.add(book1);
+        books.add(book2);
+
+        // When - Act
+        library.checkoutBook(book1);
+
+        // Then - Assert
+        verify(printStream).println("Thank you! Enjoy the book\n");
     }
 }

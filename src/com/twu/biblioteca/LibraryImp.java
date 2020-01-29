@@ -6,11 +6,9 @@ import com.twu.biblioteca.interfaces.Printer;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class LibraryImp implements Library, Printer {
 
@@ -62,6 +60,7 @@ public class LibraryImp implements Library, Printer {
     public void checkoutBook(Book book) {
         if (book.isAvailable()) {
             book.setAvailability(false);
+            showSuccessMessageCheckout();
         }
     }
 
@@ -107,5 +106,9 @@ public class LibraryImp implements Library, Printer {
             e.printStackTrace();
         }
         return book;
+    }
+
+    private void showSuccessMessageCheckout() {
+        printStream.println("Thank you! Enjoy the book\n");
     }
 }
