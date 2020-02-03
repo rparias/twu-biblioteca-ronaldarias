@@ -4,17 +4,29 @@ import com.twu.biblioteca.interfaces.Login;
 import com.twu.biblioteca.interfaces.Printer;
 import com.twu.biblioteca.interfaces.User;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.util.List;
 
 public class LoginImp implements Login, Printer {
 
     private PrintStream printStream;
+    private BufferedReader bufferedReader;
     private List<User> users;
 
-    public LoginImp(PrintStream printStream, List<User> users) {
+    public LoginImp(PrintStream printStream, List<User> users, BufferedReader bufferedReader) {
         this.printStream = printStream;
         this.users = users;
+        this.bufferedReader = bufferedReader;
+    }
+
+    public User enterUserNameAndPassword() {
+        print("Please enter library number: ");
+        String libraryNumber = readLine();
+        print("Please enter your password: ");
+        String password = readLine();
+        return loginUser(libraryNumber, password);
     }
 
     @Override
@@ -37,6 +49,16 @@ public class LoginImp implements Login, Printer {
 
     @Override
     public void print(String message) {
-        printStream.println(message);
+        printStream.println(message + "\n");
+    }
+
+    private String readLine() {
+        String text = null;
+        try {
+            text = bufferedReader.readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return text;
     }
 }

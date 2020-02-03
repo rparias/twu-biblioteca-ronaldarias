@@ -17,15 +17,28 @@ public class BibliotecaApp {
     static BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
     static LibraryImp libraryForBooks = new LibraryImp(books(), printStream, bufferedReader);
     static LibraryImp libraryForMovies = new LibraryImp(movies(), printStream, bufferedReader);
-    static LoginImp login = new LoginImp(printStream, users());
+    static LoginImp login = new LoginImp(printStream, users(), bufferedReader);
     static Menu menu = new Menu(options(), printStream, bufferedReader);
+    static User loggedUser;
 
     public static void main(String[] args) {
+        showWelcomeMessage();
+        validateUserAndPassword();
+    }
+
+    private static void showWelcomeMessage() {
         printHorizontalLines();
         showMessage("Welcome to Biblioteca. Your one-stop-shop for great book titles in Bangalore!");
         printHorizontalLines();
+    }
 
-        displayMenu();
+    private static void validateUserAndPassword() {
+        loggedUser = login.enterUserNameAndPassword();
+        if (loggedUser != null) {
+            displayMenu();
+        } else {
+            validateUserAndPassword();
+        }
     }
 
     private static void displayMenu() {
@@ -121,6 +134,7 @@ public class BibliotecaApp {
         users.add(new Customer("Ronald", "ariasron@hotmail.com", "0987654321", "123-4567"));
         users.add(new Customer("Veronica", "vero@hotmail.com", "0976857633", "234-5678"));
         users.add(new Customer("Bryan", "bryan@hotmail.com", "0998987654", "345-6789"));
+        users.add(new Customer("Librarian", "librarian@hotmail.com", "0997656789", "999-9999"));
         return users;
     }
 

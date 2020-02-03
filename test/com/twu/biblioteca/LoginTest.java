@@ -5,6 +5,7 @@ import com.twu.biblioteca.interfaces.User;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.BufferedReader;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,13 +21,15 @@ public class LoginTest {
 
     private PrintStream printStream;
     private List<User> users;
+    private BufferedReader bufferedReader;
     private Login login;
 
     @Before
     public void setUp() throws Exception {
         printStream = mock(PrintStream.class);
+        bufferedReader = mock(BufferedReader.class);
         users = new ArrayList<User>();
-        login = new LoginImp(printStream, users);
+        login = new LoginImp(printStream, users, bufferedReader);
     }
 
     @Test
@@ -95,7 +98,7 @@ public class LoginTest {
         login.loginUser(libraryNumber, password);
 
         // Then - Assert
-        verify(printStream).println("Wrong library number or password");
+        verify(printStream).println("Wrong library number or password\n");
     }
 
     @Test
@@ -110,6 +113,6 @@ public class LoginTest {
         login.loginUser(libraryNumber, password);
 
         // Then - Assert
-        verify(printStream).println("Welcome " + testUser.getName());
+        verify(printStream).println("Welcome " + testUser.getName() + "\n");
     }
 }
