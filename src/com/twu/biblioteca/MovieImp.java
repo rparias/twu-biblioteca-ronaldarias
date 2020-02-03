@@ -34,7 +34,7 @@ public class MovieImp implements Composition {
 
     @Override
     public void setAvailability(boolean isAvailable) {
-
+        this.isAvailable = isAvailable;
     }
 
     @Override

@@ -1,7 +1,6 @@
 package com.twu.biblioteca;
 
 import com.twu.biblioteca.interfaces.Composition;
-import com.twu.biblioteca.interfaces.Library;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -17,6 +16,7 @@ public class BibliotecaApp {
     static BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
     static LibraryImp libraryForBooks = new LibraryImp(books(), printStream, bufferedReader);
     static LibraryImp libraryForMovies = new LibraryImp(movies(), printStream, bufferedReader);
+    static Menu menu = new Menu(options(), printStream, bufferedReader);
 
     public static void main(String[] args) {
         printHorizontalLines();
@@ -27,7 +27,6 @@ public class BibliotecaApp {
     }
 
     private static void displayMenu() {
-        Menu menu = new Menu(options(), printStream, bufferedReader);
         menu.listOptions();
 
         showMessage("Enter a number option from menu");
@@ -62,6 +61,9 @@ public class BibliotecaApp {
             case 4:
                 displayListOfAvailableMovies();
                 displayMenu();
+                break;
+            case 5:
+                checkOutMovie();
                 break;
             case 9:
                 quitApplication();
@@ -115,6 +117,13 @@ public class BibliotecaApp {
     private static void displayListOfAvailableMovies() {
         showHeaderMoviesWithNameYearDirectorAndRating();
         libraryForMovies.printAvailableCompositions();
+    }
+
+    private static void checkOutMovie() {
+        displayListOfAvailableMovies();
+        Composition movie = libraryForMovies.enterBookName();
+        libraryForMovies.checkoutComposition(movie);
+        displayMenu();
     }
 
     private static Map<Integer, String> options() {

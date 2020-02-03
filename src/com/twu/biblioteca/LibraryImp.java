@@ -16,7 +16,6 @@ public class LibraryImp implements Library, Printer {
     private PrintStream printStream;
     private BufferedReader bufferedReader;
 
-    // public for juint, problems with singleton in tests
     public LibraryImp(List<Composition> compositions, PrintStream printStream, BufferedReader bufferedReader) {
         this.compositions = compositions;
         this.printStream = printStream;
@@ -51,15 +50,15 @@ public class LibraryImp implements Library, Printer {
     @Override
     public void checkoutComposition(Composition composition) {
         if (composition != null) {
-            changeBookToCheckedOut(composition);
+            changeCompositionToCheckedOut(composition);
         } else {
             showUnsuccessMessageCheckout();
         }
     }
 
-    private void changeBookToCheckedOut(Composition book) {
-        if (book.isAvailable()) {
-            book.setAvailability(false);
+    private void changeCompositionToCheckedOut(Composition composition) {
+        if (composition.isAvailable()) {
+            composition.setAvailability(false);
             showSuccessMessageCheckout();
         } else {
             showUnsuccessMessageCheckout();
@@ -109,12 +108,12 @@ public class LibraryImp implements Library, Printer {
 
     @Override
     public Composition findCompositionByName(String name) {
-        Composition foundBook = null;
-        for (Composition book: listAllCompositions()) {
-            if (book.getTitle().equals(name))
-                foundBook = book;
+        Composition foundComposition = null;
+        for (Composition composition: listAllCompositions()) {
+            if (composition.getTitle().equals(name))
+                foundComposition = composition;
         }
-        return foundBook;
+        return foundComposition;
     }
 
     private String readLine() {
