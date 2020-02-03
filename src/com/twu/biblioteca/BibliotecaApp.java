@@ -1,9 +1,11 @@
 package com.twu.biblioteca;
 
-import com.twu.biblioteca.interfaces.Book;
+import com.twu.biblioteca.interfaces.Composition;
+import com.twu.biblioteca.interfaces.Library;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,14 +13,21 @@ import java.util.Map;
 
 public class BibliotecaApp {
 
+    static PrintStream printStream = System.out;
+    static BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+    static LibraryImp libraryForBooks = new LibraryImp(books(), printStream, bufferedReader);
+    static LibraryImp libraryForMovies = new LibraryImp(movies(), printStream, bufferedReader);
+
     public static void main(String[] args) {
+        printHorizontalLines();
         showMessage("Welcome to Biblioteca. Your one-stop-shop for great book titles in Bangalore!");
+        printHorizontalLines();
 
         displayMenu();
     }
 
     private static void displayMenu() {
-        Menu menu = new Menu(options(), System.out, new BufferedReader(new InputStreamReader(System.in)));
+        Menu menu = new Menu(options(), printStream, bufferedReader);
         menu.listOptions();
 
         showMessage("Enter a number option from menu");
@@ -50,6 +59,10 @@ public class BibliotecaApp {
             case 3:
                 returnBook();
                 break;
+            case 4:
+                displayListOfAvailableMovies();
+                displayMenu();
+                break;
             case 9:
                 quitApplication();
                 break;
@@ -60,39 +73,48 @@ public class BibliotecaApp {
     }
 
     private static void displayListOfAvailableBooks() {
-        showHeaderWithTitleAuthorAndYear();
-        LibraryImp library = LibraryImp.getInstanceLibrary(books(), System.out, new BufferedReader(new InputStreamReader(System.in)));
-        library.printAvailableBooks();
+        showHeaderBooksWithTitleAuthorAndYear();
+        libraryForBooks.printAvailableCompositions();
     }
 
-    private static void displayListOfCheckecOutBooks() {
-        showHeaderWithTitleAuthorAndYear();
-        LibraryImp library = LibraryImp.getInstanceLibrary(books(), System.out, new BufferedReader(new InputStreamReader(System.in)));
-        library.printCheckedOutBooks();
+    private static void displayListOfCheckedOutBooks() {
+        showHeaderBooksWithTitleAuthorAndYear();
+        libraryForBooks.printCheckedOutBooks();
     }
 
     private static void checkOutBook() {
         displayListOfAvailableBooks();
-        LibraryImp library = LibraryImp.getInstanceLibrary(books(), System.out, new BufferedReader(new InputStreamReader(System.in)));
-        Book book = library.enterBookName();
-        library.checkoutBook(book);
+        Composition book = libraryForBooks.enterBookName();
+        libraryForBooks.checkoutComposition(book);
         displayMenu();
     }
 
     private static void returnBook() {
-        displayListOfCheckecOutBooks();
-        LibraryImp library = LibraryImp.getInstanceLibrary(books(), System.out, new BufferedReader(new InputStreamReader(System.in)));
-        Book book = library.enterBookName();
-        library.returnBook(book);
+        displayListOfCheckedOutBooks();
+        Composition book = libraryForBooks.enterBookName();
+        libraryForBooks.returnComposition(book);
         displayMenu();
     }
 
-    private static List<Book> books() {
-        List<Book> books = new ArrayList<Book>();
+    private static List<Composition> books() {
+        List<Composition> books = new ArrayList<Composition>();
         books.add(new BookImp("Clean Code", "Robert Martin", 2010));
         books.add(new BookImp("TDD by Example", "Kent Beck", 2008));
         books.add(new BookImp("Clean Architecture", "Robert Martin", 2014));
         return books;
+    }
+
+    private static List<Composition> movies() {
+        List<Composition> movies = new ArrayList<Composition>();
+        movies.add(new MovieImp("Clockwork Orange", 1971, "Stanley Kubrick", 10));
+        movies.add(new MovieImp("Pulp Fiction", 1994, "Quentin Tarantino", 9));
+        movies.add(new MovieImp("Reservoir Dogs", 1992, "Quentin Tarantino", 7));
+        return movies;
+    }
+
+    private static void displayListOfAvailableMovies() {
+        showHeaderMoviesWithNameYearDirectorAndRating();
+        libraryForMovies.printAvailableCompositions();
     }
 
     private static Map<Integer, String> options() {
@@ -100,6 +122,8 @@ public class BibliotecaApp {
         options.put(1, "List of Books");
         options.put(2, "Checkout a book");
         options.put(3, "Return a book");
+        options.put(4, "List of Movies");
+        options.put(5, "Checkout a movie");
         options.put(9, "Quit");
         return options;
     }
@@ -109,10 +133,18 @@ public class BibliotecaApp {
     }
 
     private static void showMessage(String message) {
-        System.out.println(message + "\n");
+        printStream.println(message + "\n");
     }
 
-    private static void showHeaderWithTitleAuthorAndYear() {
-        System.out.printf("\n%-35s%-25s%-4s\n\n", "TITLE", "AUTHOR", "YEAR");
+    private static void showHeaderBooksWithTitleAuthorAndYear() {
+        printStream.printf("\n%-35s%-25s%-4s\n", "TITLE", "AUTHOR", "YEAR");
+    }
+
+    private static void showHeaderMoviesWithNameYearDirectorAndRating() {
+        printStream.printf("\n%-25s%-10s%-25s%-2s\n", "NAME", "YEAR", "DIRECTOR", "RATING");
+    }
+
+    private static void printHorizontalLines() {
+        showMessage("================================================================================");
     }
 }

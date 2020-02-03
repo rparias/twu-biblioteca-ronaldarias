@@ -1,6 +1,6 @@
 package com.twu.biblioteca;
 
-import com.twu.biblioteca.interfaces.Book;
+import com.twu.biblioteca.interfaces.Composition;
 import com.twu.biblioteca.interfaces.Library;
 import com.twu.biblioteca.interfaces.Printer;
 
@@ -12,34 +12,26 @@ import java.util.List;
 
 public class LibraryImp implements Library, Printer {
 
-    private List<Book> books;
+    private List<Composition> compositions;
     private PrintStream printStream;
     private BufferedReader bufferedReader;
-    private static LibraryImp library = null;
-
-    public static LibraryImp getInstanceLibrary(List<Book> books, PrintStream printStream, BufferedReader bufferedReader) {
-        if (library == null) {
-            library = new LibraryImp(books, printStream, bufferedReader);
-        }
-        return library;
-    }
 
     // public for juint, problems with singleton in tests
-    public LibraryImp(List<Book> books, PrintStream printStream, BufferedReader bufferedReader) {
-        this.books = books;
+    public LibraryImp(List<Composition> compositions, PrintStream printStream, BufferedReader bufferedReader) {
+        this.compositions = compositions;
         this.printStream = printStream;
         this.bufferedReader = bufferedReader;
     }
 
     @Override
-    public List<Book> listAllBooks() {
-        return books;
+    public List<Composition> listAllCompositions() {
+        return compositions;
     }
 
     @Override
-    public List<Book> listAvailableBooks() {
-        List<Book> availableBooks = new ArrayList<Book>();
-        for (Book book: books) {
+    public List<Composition> listAvailableCompositions() {
+        List<Composition> availableBooks = new ArrayList<Composition>();
+        for (Composition book: compositions) {
             if (book.isAvailable())
                 availableBooks.add(book);
         }
@@ -47,9 +39,9 @@ public class LibraryImp implements Library, Printer {
     }
 
     @Override
-    public List<Book> listCheckedOutBooks() {
-        List<Book> checkedOutBooks = new ArrayList<Book>();
-        for (Book book: books) {
+    public List<Composition> listCheckedOutCompositions() {
+        List<Composition> checkedOutBooks = new ArrayList<Composition>();
+        for (Composition book: compositions) {
             if (!book.isAvailable())
                 checkedOutBooks.add(book);
         }
@@ -57,15 +49,15 @@ public class LibraryImp implements Library, Printer {
     }
 
     @Override
-    public void checkoutBook(Book book) {
-        if (book != null) {
-            changeBookToCheckedOut(book);
+    public void checkoutComposition(Composition composition) {
+        if (composition != null) {
+            changeBookToCheckedOut(composition);
         } else {
             showUnsuccessMessageCheckout();
         }
     }
 
-    private void changeBookToCheckedOut(Book book) {
+    private void changeBookToCheckedOut(Composition book) {
         if (book.isAvailable()) {
             book.setAvailability(false);
             showSuccessMessageCheckout();
@@ -75,15 +67,15 @@ public class LibraryImp implements Library, Printer {
     }
 
     @Override
-    public void returnBook(Book book) {
-        if (book != null) {
-            changeBookToAvailable(book);
+    public void returnComposition(Composition composition) {
+        if (composition != null) {
+            changeBookToAvailable(composition);
         } else {
             showUnsuccessMessageReturn();
         }
     }
 
-    private void changeBookToAvailable(Book book) {
+    private void changeBookToAvailable(Composition book) {
         if (!book.isAvailable()) {
             book.setAvailability(true);
             showSuccessMessageOnReturn();
@@ -92,33 +84,33 @@ public class LibraryImp implements Library, Printer {
         }
     }
 
-    public void printAvailableBooks() {
-        displayBooks(listAvailableBooks());
+    public void printAvailableCompositions() {
+        displayCompositions(listAvailableCompositions());
     }
 
     public void printCheckedOutBooks() {
-        displayBooks(listCheckedOutBooks());
+        displayCompositions(listCheckedOutCompositions());
     }
 
     @Override
-    public void displayBooks(List<Book> books) {
-        String bookList = "";
-        for (Book book: books) {
-            bookList += book.printTitleAuthorAndYearBook() + "\n";
+    public void displayCompositions(List<Composition> compositions) {
+        String compositionList = "";
+        for (Composition composition: compositions) {
+            compositionList += composition.printCompositionInfo() + "\n";
         }
-        printStream.println(bookList);
+        printStream.println(compositionList);
     }
 
-    public Book enterBookName() {
+    public Composition enterBookName() {
         printStream.println("Please enter book name");
         String bookName = readLine();
-        return findBookByName(bookName);
+        return findCompositionByName(bookName);
     }
 
     @Override
-    public Book findBookByName(String name) {
-        Book foundBook = null;
-        for (Book book: listAllBooks()) {
+    public Composition findCompositionByName(String name) {
+        Composition foundBook = null;
+        for (Composition book: listAllCompositions()) {
             if (book.getTitle().equals(name))
                 foundBook = book;
         }

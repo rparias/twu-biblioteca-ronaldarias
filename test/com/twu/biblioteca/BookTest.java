@@ -1,5 +1,6 @@
 package com.twu.biblioteca;
 
+import com.twu.biblioteca.interfaces.Composition;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -13,10 +14,10 @@ public class BookTest {
         String title = "Clean Code";
         String author = "Robert Martin";
         int year = 2010;
-        BookImp book = new BookImp(title, author, year);
+        Composition book = new BookImp(title, author, year);
 
         // When - Act
-        String bookInfo = book.printTitleAuthorAndYearBook();
+        String bookInfo = book.printCompositionInfo();
 
         // Then - Assert
         assertThat(bookInfo, is("Clean Code                         Robert Martin            2010"));

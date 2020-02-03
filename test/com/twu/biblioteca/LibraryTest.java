@@ -1,6 +1,6 @@
 package com.twu.biblioteca;
 
-import com.twu.biblioteca.interfaces.Book;
+import com.twu.biblioteca.interfaces.Composition;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,14 +19,14 @@ import static org.mockito.Mockito.verify;
 
 public class LibraryTest {
 
-    private List<Book> books;
+    private List<Composition> books;
     private LibraryImp library;
     private PrintStream printStream;
     private BufferedReader bufferedReader;
 
     @Before
     public void setUp() throws Exception {
-        books = new ArrayList<Book>();
+        books = new ArrayList<Composition>();
         printStream = mock(PrintStream.class);
         bufferedReader = mock(BufferedReader.class);
         library = new LibraryImp(books, printStream, bufferedReader);
@@ -35,21 +35,21 @@ public class LibraryTest {
     @Test
     public void shouldPrintAListOfAllLibraryBooks() {
         // Given - Arrange
-        Book book1 = new BookImp("Clean Code", "Robert Martin", 2010);
+        Composition book1 = new BookImp("Clean Code", "Robert Martin", 2010);
         this.books.add(book1);
 
         // When - Act
-        List<Book> books = library.listAllBooks();
-        library.displayBooks(books);
+        List<Composition> books = library.listAllCompositions();
+        library.displayCompositions(books);
 
         // Then - Assert
         verify(printStream).println("Clean Code                         Robert Martin            2010\n");
     }
 
     @Test
-    public void ShouldBeAvailableWhenBookIsCreated() {
+    public void ShouldBeAvailableWhenCompositionIsCreated() {
         // Given - Arrange
-        Book book = new BookImp("Clean Code", "Robert Martin", 2010);
+        Composition book = new BookImp("Clean Code", "Robert Martin", 2010);
         books.add(book);
 
         // When - Act
@@ -60,13 +60,13 @@ public class LibraryTest {
     }
 
     @Test
-    public void ShouldBeNotAvailableWhenBookIsCheckedOut() {
+    public void ShouldBeNotAvailableWhenCompositionIsCheckedOut() {
         // Given - Arrange
-        Book book = new BookImp("Clean Code", "Robert Martin", 2010);
+        Composition book = new BookImp("Clean Code", "Robert Martin", 2010);
         books.add(book);
 
         // When - Act
-        library.checkoutBook(book);
+        library.checkoutComposition(book);
         boolean isAvailable = book.isAvailable();
 
         // Then - Assert
@@ -76,14 +76,14 @@ public class LibraryTest {
     @Test
     public void shouldNotPrintIfBookIsCheckedOut() {
         // Given - Arrange
-        Book book1 = new BookImp("Clean Code", "Robert Martin", 2010);
-        Book book2 = new BookImp("TDD by Example", "Kent Beck", 2008);
+        Composition book1 = new BookImp("Clean Code", "Robert Martin", 2010);
+        Composition book2 = new BookImp("TDD by Example", "Kent Beck", 2008);
         books.add(book1);
         books.add(book2);
 
         // When - Act
-        library.checkoutBook(book1);
-        List<Book> availableBooks = library.listAvailableBooks();
+        library.checkoutComposition(book1);
+        List<Composition> availableBooks = library.listAvailableCompositions();
 
         // Then - Assert
         assertThat(availableBooks, not(hasItems(book1)));
@@ -92,14 +92,14 @@ public class LibraryTest {
     @Test
     public void shouldReturnBookWhenUserIntroduceNameBook() {
         // Given - Arrange
-        Book book1 = new BookImp("Clean Code", "Robert Martin", 2010);
-        Book book2 = new BookImp("TDD by Example", "Kent Beck", 2008);
+        Composition book1 = new BookImp("Clean Code", "Robert Martin", 2010);
+        Composition book2 = new BookImp("TDD by Example", "Kent Beck", 2008);
         books.add(book1);
         books.add(book2);
         String nameBook = "Clean Code";
 
         // When - Act
-        Book book = library.findBookByName(nameBook);
+        Composition book = library.findCompositionByName(nameBook);
 
         // Then - Assert
         assertThat(book.getTitle(), is("Clean Code"));
@@ -108,14 +108,14 @@ public class LibraryTest {
     @Test
     public void shouldReturnNullWhenUserIntroduceWrongNameBook() {
         // Given - Arrange
-        Book book1 = new BookImp("Clean Code", "Robert Martin", 2010);
-        Book book2 = new BookImp("TDD by Example", "Kent Beck", 2008);
+        Composition book1 = new BookImp("Clean Code", "Robert Martin", 2010);
+        Composition book2 = new BookImp("TDD by Example", "Kent Beck", 2008);
         books.add(book1);
         books.add(book2);
         String nameBook = "Clean Ce";
 
         // When - Act
-        Book book = library.findBookByName(nameBook);
+        Composition book = library.findCompositionByName(nameBook);
 
         // Then - Assert
         assertThat(book, is(nullValue()));
@@ -124,13 +124,13 @@ public class LibraryTest {
     @Test
     public void shouldDisplaySuccessMessageOnCheckOutOfABook() {
         // Given - Arrange
-        Book book1 = new BookImp("Clean Code", "Robert Martin", 2010);
-        Book book2 = new BookImp("TDD by Example", "Kent Beck", 2008);
+        Composition book1 = new BookImp("Clean Code", "Robert Martin", 2010);
+        Composition book2 = new BookImp("TDD by Example", "Kent Beck", 2008);
         books.add(book1);
         books.add(book2);
 
         // When - Act
-        library.checkoutBook(book1);
+        library.checkoutComposition(book1);
 
         // Then - Assert
         verify(printStream).println("Thank you! Enjoy the book\n");
@@ -139,14 +139,14 @@ public class LibraryTest {
     @Test
     public void shouldDisplayUnsuccessMessageOnCheckOutOfABook() {
         // Given - Arrange
-        Book book1 = new BookImp("Clean Code", "Robert Martin", 2010);
+        Composition book1 = new BookImp("Clean Code", "Robert Martin", 2010);
         book1.setAvailability(false);
-        Book book2 = new BookImp("TDD by Example", "Kent Beck", 2008);
+        Composition book2 = new BookImp("TDD by Example", "Kent Beck", 2008);
         books.add(book1);
         books.add(book2);
 
         // When - Act
-        library.checkoutBook(null);
+        library.checkoutComposition(null);
 
         // Then - Assert
         verify(printStream).println("Sorry, that book is not available\n");
@@ -155,14 +155,14 @@ public class LibraryTest {
     @Test
     public void shouldListOnlyCheckedOutBooks() {
         // Given - Arrange
-        Book book1 = new BookImp("Clean Code", "Robert Martin", 2010);
-        Book book2 = new BookImp("TDD by Example", "Kent Beck", 2008);
+        Composition book1 = new BookImp("Clean Code", "Robert Martin", 2010);
+        Composition book2 = new BookImp("TDD by Example", "Kent Beck", 2008);
         books.add(book1);
         books.add(book2);
 
         // When - Act
-        library.checkoutBook(book1);
-        List<Book> unavailableBooks = library.listCheckedOutBooks();
+        library.checkoutComposition(book1);
+        List<Composition> unavailableBooks = library.listCheckedOutCompositions();
 
         // Then - Assert
         assertThat(unavailableBooks, hasItems(book1));
@@ -170,14 +170,14 @@ public class LibraryTest {
     }
 
     @Test
-    public void shouldReturnTrueInAvailabilityWhenBookIsReturned() {
+    public void shouldReturnTrueInAvailabilityWhenCompositionIsReturned() {
         // Given - Arrange
-        Book book = new BookImp("Clean Code", "Robert Martin", 2010);
+        Composition book = new BookImp("Clean Code", "Robert Martin", 2010);
         book.setAvailability(false);
         books.add(book);
 
         // When - Act
-        library.returnBook(book);
+        library.returnComposition(book);
 
         // Then - Assert
         assertThat(book.isAvailable(), is(true));
@@ -186,14 +186,14 @@ public class LibraryTest {
     @Test
     public void shouldDisplaySuccessMessageOnSuccessfulReturn() {
         // Given - Arrange
-        Book book1 = new BookImp("Clean Code", "Robert Martin", 2010);
+        Composition book1 = new BookImp("Clean Code", "Robert Martin", 2010);
         book1.setAvailability(false);
-        Book book2 = new BookImp("TDD by Example", "Kent Beck", 2008);
+        Composition book2 = new BookImp("TDD by Example", "Kent Beck", 2008);
         books.add(book1);
         books.add(book2);
 
         // When - Act
-        library.returnBook(book1);
+        library.returnComposition(book1);
 
         // Then - Assert
         verify(printStream).println("Thank you for returning the book\n");
@@ -202,13 +202,13 @@ public class LibraryTest {
     @Test
     public void shouldDisplayUnsuccessfulMessageOnUnsuccessfulReturn() {
         // Given - Arrange
-        Book book1 = new BookImp("Clean Code", "Robert Martin", 2010);
-        Book book2 = new BookImp("TDD by Example", "Kent Beck", 2008);
+        Composition book1 = new BookImp("Clean Code", "Robert Martin", 2010);
+        Composition book2 = new BookImp("TDD by Example", "Kent Beck", 2008);
         books.add(book1);
         books.add(book2);
 
         // When - Act
-        library.returnBook(null);
+        library.returnComposition(null);
 
         // Then - Assert
         verify(printStream).println("That is not a valid book to return\n");

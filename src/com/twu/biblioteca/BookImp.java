@@ -1,8 +1,8 @@
 package com.twu.biblioteca;
 
-import com.twu.biblioteca.interfaces.Book;
+import com.twu.biblioteca.interfaces.Composition;
 
-public class BookImp implements Book {
+public class BookImp implements Composition {
 
     private String title;
     private String author;
@@ -16,9 +16,13 @@ public class BookImp implements Book {
         isAvailable = true;
     }
 
-    @Override
-    public String printTitleAuthorAndYearBook() {
+    private String printTitleAuthorAndYearBook() {
         return String.format("%-35s%-25s%-4d", title, author, year);
+    }
+
+    @Override
+    public String printCompositionInfo() {
+        return printTitleAuthorAndYearBook();
     }
 
     @Override

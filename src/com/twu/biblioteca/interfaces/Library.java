@@ -4,11 +4,11 @@ import java.util.List;
 
 public interface Library {
 
-    List<Book> listAllBooks();
-    List<Book> listAvailableBooks();
-    List<Book> listCheckedOutBooks();
-    void checkoutBook(Book book);
-    void returnBook(Book book);
-    Book findBookByName(String name);
+    List<Composition> listAllCompositions();
+    List<Composition> listAvailableCompositions();
+    List<Composition> listCheckedOutCompositions();
+    void checkoutComposition(Composition composition);
+    void returnComposition(Composition composition);
+    Composition findCompositionByName(String name);
 
 }

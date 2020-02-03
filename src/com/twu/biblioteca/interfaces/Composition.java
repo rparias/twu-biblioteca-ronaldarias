@@ -1,8 +1,8 @@
 package com.twu.biblioteca.interfaces;
 
-public interface Book {
+public interface Composition {
 
-    String printTitleAuthorAndYearBook();
+    String printCompositionInfo();
     boolean isAvailable();
     void setAvailability(boolean isAvailable);
     String getTitle();
