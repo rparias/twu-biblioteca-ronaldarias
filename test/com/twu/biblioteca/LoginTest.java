@@ -1,23 +1,115 @@
 package com.twu.biblioteca;
 
 import com.twu.biblioteca.interfaces.Login;
+import com.twu.biblioteca.interfaces.User;
+import org.junit.Before;
 import org.junit.Test;
 
+import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 public class LoginTest {
+
+    private PrintStream printStream;
+    private List<User> users;
+    private Login login;
+
+    @Before
+    public void setUp() throws Exception {
+        printStream = mock(PrintStream.class);
+        users = new ArrayList<User>();
+        login = new LoginImp(printStream, users);
+    }
 
     @Test
     public void shouldMatchWithIndicatedFormat() {
         // Given - Arrange
         String libraryNumber = "123-4576";
-        Login login = new LoginImp();
 
         // When - Act
         boolean isMatching = login.validateLibraryNumberFormat(libraryNumber);
 
         // Then - Assert
         assertThat(isMatching, is(true));
+    }
+
+    @Test
+    public void shouldReturnNullIfLoginIsNotSuccessful() {
+        // Given - Arrange
+        String libraryNumber = "123-4576";
+        String password = "654321";
+        User testUser = new Customer("Ronald", "ariasron@hotmail.com", "0987654321", libraryNumber);
+        users.add(testUser);
+
+        // When - Act
+        User user = login.loginUser(libraryNumber, password);
+
+        // Then - Assert
+        assertThat(user, is(nullValue()));
+    }
+
+    @Test
+    public void shouldReturnUserIfLoginIsSuccessful() {
+        // Given - Arrange
+        String libraryNumber = "123-4576";
+        String password = "123456";
+        User testUser = new Customer("Ronald", "ariasron@hotmail.com", "0987654321", libraryNumber);
+        users.add(testUser);
+
+        // When - Act
+        User user = login.loginUser(libraryNumber, password);
+
+        // Then - Assert
+        assertThat(user, is(equalTo(testUser)));
+    }
+
+    @Test
+    public void shouldReturnTrueIfLoginIsSuccessful() {
+        // Given - Arrange
+        String libraryNumber = "123-4576";
+        String password = "123456";
+
+        // When - Act
+        User user = login.loginUser(libraryNumber, password);
+
+        // Then - Assert
+    }
+
+    @Test
+    public void shouldPrintErrorMessageIfPasswordOrLibraryNumberIsIncorrect() {
+        // Given - Arrange
+        String libraryNumber = "123-4576";
+        String password = "";
+        User testUser = new Customer("Ronald", "ariasron@hotmail.com", "0987654321", libraryNumber);
+        users.add(testUser);
+
+        // When - Act
+        login.loginUser(libraryNumber, password);
+
+        // Then - Assert
+        verify(printStream).println("Wrong library number or password");
+    }
+
+    @Test
+    public void shouldPrintWelcomeMessageIfPasswordAndLibraryNumberIsCorrect() {
+        // Given - Arrange
+        String libraryNumber = "123-4576";
+        String password = "123456";
+        User testUser = new Customer("Ronald", "ariasron@hotmail.com", "0987654321", libraryNumber);
+        users.add(testUser);
+
+        // When - Act
+        login.loginUser(libraryNumber, password);
+
+        // Then - Assert
+        verify(printStream).println("Welcome " + testUser.getName());
     }
 }

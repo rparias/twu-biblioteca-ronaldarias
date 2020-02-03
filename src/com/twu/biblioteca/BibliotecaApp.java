@@ -1,6 +1,7 @@
 package com.twu.biblioteca;
 
 import com.twu.biblioteca.interfaces.Composition;
+import com.twu.biblioteca.interfaces.User;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -16,6 +17,7 @@ public class BibliotecaApp {
     static BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
     static LibraryImp libraryForBooks = new LibraryImp(books(), printStream, bufferedReader);
     static LibraryImp libraryForMovies = new LibraryImp(movies(), printStream, bufferedReader);
+    static LoginImp login = new LoginImp(printStream, users());
     static Menu menu = new Menu(options(), printStream, bufferedReader);
 
     public static void main(String[] args) {
@@ -112,6 +114,14 @@ public class BibliotecaApp {
         movies.add(new MovieImp("Pulp Fiction", 1994, "Quentin Tarantino", 9));
         movies.add(new MovieImp("Reservoir Dogs", 1992, "Quentin Tarantino", 7));
         return movies;
+    }
+
+    private static List<User> users() {
+        List<User> users = new ArrayList<>();
+        users.add(new Customer("Ronald", "ariasron@hotmail.com", "0987654321", "123-4567"));
+        users.add(new Customer("Veronica", "vero@hotmail.com", "0976857633", "234-5678"));
+        users.add(new Customer("Bryan", "bryan@hotmail.com", "0998987654", "345-6789"));
+        return users;
     }
 
     private static void displayListOfAvailableMovies() {

@@ -91,17 +91,21 @@ public class LibraryImp implements Library, Printer {
         displayCompositions(listCheckedOutCompositions());
     }
 
-    @Override
     public void displayCompositions(List<Composition> compositions) {
         String compositionList = "";
         for (Composition composition: compositions) {
             compositionList += composition.printCompositionInfo() + "\n";
         }
-        printStream.println(compositionList);
+        print(compositionList);
+    }
+
+    @Override
+    public void print(String message) {
+        printStream.println(message);
     }
 
     public Composition enterBookName() {
-        printStream.println("Please enter book name");
+        print("Please enter book name");
         String bookName = readLine();
         return findCompositionByName(bookName);
     }
@@ -127,18 +131,18 @@ public class LibraryImp implements Library, Printer {
     }
 
     private void showSuccessMessageCheckout() {
-        printStream.println("Thank you! Enjoy the book\n");
+        print("Thank you! Enjoy the book\n");
     }
 
     private void showUnsuccessMessageCheckout() {
-        printStream.println("Sorry, that book is not available\n");
+        print("Sorry, that book is not available\n");
     }
 
     private void showSuccessMessageOnReturn() {
-        printStream.println("Thank you for returning the book\n");
+        print("Thank you for returning the book\n");
     }
 
     private void showUnsuccessMessageReturn() {
-        printStream.println("That is not a valid book to return\n");
+        print("That is not a valid book to return\n");
     }
 }
