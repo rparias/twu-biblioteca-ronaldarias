@@ -1,5 +1,6 @@
 package com.twu.biblioteca;
 
+import com.twu.biblioteca.interfaces.Booking;
 import com.twu.biblioteca.interfaces.Composition;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,6 +24,7 @@ public class LibraryTest {
     private LibraryImp library;
     private PrintStream printStream;
     private BufferedReader bufferedReader;
+    Customer customer;
 
     @Before
     public void setUp() throws Exception {
@@ -30,6 +32,7 @@ public class LibraryTest {
         printStream = mock(PrintStream.class);
         bufferedReader = mock(BufferedReader.class);
         library = new LibraryImp(books, printStream, bufferedReader);
+        customer = new Customer("Ronald", "ariasron@hotmail.com", "0987654321", "123-4567");
     }
 
     @Test
@@ -66,7 +69,7 @@ public class LibraryTest {
         books.add(book);
 
         // When - Act
-        library.checkoutComposition(book);
+        library.checkoutComposition(book, customer);
         boolean isAvailable = book.isAvailable();
 
         // Then - Assert
@@ -82,7 +85,7 @@ public class LibraryTest {
         books.add(book2);
 
         // When - Act
-        library.checkoutComposition(book1);
+        library.checkoutComposition(book1, customer);
         List<Composition> availableBooks = library.listAvailableCompositions();
 
         // Then - Assert
@@ -130,7 +133,7 @@ public class LibraryTest {
         books.add(book2);
 
         // When - Act
-        library.checkoutComposition(book1);
+        library.checkoutComposition(book1, customer);
 
         // Then - Assert
         verify(printStream).println("Thank you! Enjoy the book\n");
@@ -146,7 +149,7 @@ public class LibraryTest {
         books.add(book2);
 
         // When - Act
-        library.checkoutComposition(null);
+        library.checkoutComposition(null, customer);
 
         // Then - Assert
         verify(printStream).println("Sorry, that book is not available\n");
@@ -161,7 +164,7 @@ public class LibraryTest {
         books.add(book2);
 
         // When - Act
-        library.checkoutComposition(book1);
+        library.checkoutComposition(book1, customer);
         List<Composition> unavailableBooks = library.listCheckedOutCompositions();
 
         // Then - Assert
@@ -177,7 +180,7 @@ public class LibraryTest {
         books.add(book);
 
         // When - Act
-        library.returnComposition(book);
+        library.returnComposition(book, customer);
 
         // Then - Assert
         assertThat(book.isAvailable(), is(true));
@@ -193,7 +196,7 @@ public class LibraryTest {
         books.add(book2);
 
         // When - Act
-        library.returnComposition(book1);
+        library.returnComposition(book1, customer);
 
         // Then - Assert
         verify(printStream).println("Thank you for returning the book\n");
@@ -208,9 +211,28 @@ public class LibraryTest {
         books.add(book2);
 
         // When - Act
-        library.returnComposition(null);
+        library.returnComposition(null, customer);
 
         // Then - Assert
         verify(printStream).println("That is not a valid book to return\n");
+    }
+
+    @Test
+    public void shouldListInBookingsIfBookIsCheckedOut() {
+        // Given - Arrange
+        Composition book1 = new BookImp("Clean Code", "Robert Martin", 2010);
+        Composition book2 = new BookImp("TDD by Example", "Kent Beck", 2008);
+        books.add(book1);
+        books.add(book2);
+
+        // When - Act
+        library.checkoutComposition(book1, customer);
+        Booking booking = new BookingImp(book1, customer);
+        Booking booking2 = new BookingImp(book2, customer);
+        List<Booking> bookings = library.listBookingCompositions();
+
+        // Then - Assert
+        assertThat(bookings, hasItems(booking));
+        assertThat(bookings, not(hasItems(booking2)));
     }
 }

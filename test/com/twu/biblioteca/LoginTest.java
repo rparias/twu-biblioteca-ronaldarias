@@ -12,6 +12,7 @@ import java.util.List;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
@@ -75,18 +76,6 @@ public class LoginTest {
     }
 
     @Test
-    public void shouldReturnTrueIfLoginIsSuccessful() {
-        // Given - Arrange
-        String libraryNumber = "123-4576";
-        String password = "123456";
-
-        // When - Act
-        User user = login.loginUser(libraryNumber, password);
-
-        // Then - Assert
-    }
-
-    @Test
     public void shouldPrintErrorMessageIfPasswordOrLibraryNumberIsIncorrect() {
         // Given - Arrange
         String libraryNumber = "123-4576";
@@ -114,5 +103,22 @@ public class LoginTest {
 
         // Then - Assert
         verify(printStream).println("Welcome " + testUser.getName() + "\n");
+    }
+
+    @Test
+    public void shouldReturnTrueIfUserIsAdmin() {
+        // Given - Arrange
+        User normalUser = new Customer("Ronald", "ariasron@hotmail.com", "0987654321", "123-4567");
+        User adminUser = new Customer("Librarian", "librarian@hotmail.com", "0997656789", "999-9999");
+        users.add(normalUser);
+        users.add(adminUser);
+
+        // When - Act
+        boolean isAdmin = login.isAdmin(adminUser);
+        boolean isNotAdmin = login.isAdmin(normalUser);
+
+        // Then - Assert
+        assertThat(isAdmin, is(true));
+        assertThat(isNotAdmin, is(not(true)));
     }
 }

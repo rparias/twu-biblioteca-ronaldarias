@@ -3,6 +3,7 @@ package com.twu.biblioteca;
 import com.twu.biblioteca.interfaces.Composition;
 import org.junit.Test;
 
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -22,5 +23,19 @@ public class MovieTest {
 
         // Then - Assert
         assertThat(movieInfo, is("Clockwork Orange         1971      Stanley Kubrick          10"));
+    }
+
+    @Test
+    public void shouldBeEqualsMovieImpWithComposition() {
+        // Given - Arrange
+        Composition movie = new MovieImp("Clockwork Orange", 1971, "Stanley Kubrick", 10);
+        MovieImp movieImp = new MovieImp("Clockwork Orange", 1971, "Stanley Kubrick", 10);
+
+
+        // When - Act
+
+
+        // Then - Assert
+        assertThat(movie, is(equalTo(movieImp)));
     }
 }

@@ -1,6 +1,7 @@
 package com.twu.biblioteca;
 
 import com.twu.biblioteca.interfaces.Composition;
+import com.twu.biblioteca.interfaces.User;
 
 public class BookImp implements Composition {
 
@@ -38,5 +39,14 @@ public class BookImp implements Composition {
     @Override
     public String getTitle() {
         return title;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        BookImp composition = (BookImp) obj;
+        return title.equals(composition.title) &&
+                author.equals(composition.author) &&
+                year == composition.year &&
+                isAvailable == composition.isAvailable;
     }
 }

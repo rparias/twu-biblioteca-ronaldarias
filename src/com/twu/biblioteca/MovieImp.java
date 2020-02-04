@@ -41,4 +41,14 @@ public class MovieImp implements Composition {
     public String getTitle() {
         return name;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        MovieImp composition = (MovieImp) obj;
+        return name.equals(composition.name) &&
+                year == composition.year &&
+                director.equals(composition.director) &&
+                rating == composition.rating &&
+                isAvailable == composition.isAvailable;
+    }
 }

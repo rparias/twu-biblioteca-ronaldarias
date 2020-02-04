@@ -1,8 +1,10 @@
 package com.twu.biblioteca;
 
+import com.twu.biblioteca.interfaces.Booking;
 import com.twu.biblioteca.interfaces.Composition;
 import com.twu.biblioteca.interfaces.Library;
 import com.twu.biblioteca.interfaces.Printer;
+import com.twu.biblioteca.interfaces.User;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,6 +17,7 @@ public class LibraryImp implements Library, Printer {
     private List<Composition> compositions;
     private PrintStream printStream;
     private BufferedReader bufferedReader;
+    private static List<Booking> bookings = new ArrayList<>();
 
     public LibraryImp(List<Composition> compositions, PrintStream printStream, BufferedReader bufferedReader) {
         this.compositions = compositions;
@@ -48,9 +51,10 @@ public class LibraryImp implements Library, Printer {
     }
 
     @Override
-    public void checkoutComposition(Composition composition) {
+    public void checkoutComposition(Composition composition, User user) {
         if (composition != null) {
             changeCompositionToCheckedOut(composition);
+            bookings.add(new BookingImp(composition, user));
         } else {
             showUnsuccessMessageCheckout();
         }
@@ -66,8 +70,9 @@ public class LibraryImp implements Library, Printer {
     }
 
     @Override
-    public void returnComposition(Composition composition) {
+    public void returnComposition(Composition composition, User user) {
         if (composition != null) {
+            bookings.remove(searchBookingByCompositionAndUser(composition, user));
             changeBookToAvailable(composition);
         } else {
             showUnsuccessMessageReturn();
@@ -118,6 +123,19 @@ public class LibraryImp implements Library, Printer {
                 foundComposition = composition;
         }
         return foundComposition;
+    }
+
+    @Override
+    public List<Booking> listBookingCompositions() {
+        return bookings;
+    }
+
+    private Booking searchBookingByCompositionAndUser(Composition composition, User user) {
+        Booking booking = new BookingImp(composition, user);
+        return bookings.stream()
+                .filter(booking::equals)
+                .findAny()
+                .orElse(null);
     }
 
     private String readLine() {

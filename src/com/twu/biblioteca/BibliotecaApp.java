@@ -102,14 +102,14 @@ public class BibliotecaApp {
     private static void checkOutBook() {
         displayListOfAvailableBooks();
         Composition book = libraryForBooks.enterBookName();
-        libraryForBooks.checkoutComposition(book);
+        libraryForBooks.checkoutComposition(book, loggedUser);
         displayMenu();
     }
 
     private static void returnBook() {
         displayListOfCheckedOutBooks();
         Composition book = libraryForBooks.enterBookName();
-        libraryForBooks.returnComposition(book);
+        libraryForBooks.returnComposition(book, loggedUser);
         displayMenu();
     }
 
@@ -146,7 +146,7 @@ public class BibliotecaApp {
     private static void checkOutMovie() {
         displayListOfAvailableMovies();
         Composition movie = libraryForMovies.enterBookName();
-        libraryForMovies.checkoutComposition(movie);
+        libraryForMovies.checkoutComposition(movie, loggedUser);
         displayMenu();
     }
 

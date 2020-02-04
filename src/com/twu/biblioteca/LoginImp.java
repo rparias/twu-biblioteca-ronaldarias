@@ -48,6 +48,11 @@ public class LoginImp implements Login, Printer {
     }
 
     @Override
+    public boolean isAdmin(User user) {
+        return user.getName().equals("Librarian");
+    }
+
+    @Override
     public void print(String message) {
         printStream.println(message + "\n");
     }
