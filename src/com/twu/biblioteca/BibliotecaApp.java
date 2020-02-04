@@ -22,6 +22,10 @@ public class BibliotecaApp {
     static User loggedUser;
 
     public static void main(String[] args) {
+        showInitialPage();
+    }
+
+    private static void showInitialPage() {
         showWelcomeMessage();
         validateUserAndPassword();
     }
@@ -83,6 +87,9 @@ public class BibliotecaApp {
             case 6:
                 displayListOfCheckedOutCompositions();
                 displayMenu();
+                break;
+            case 8:
+                logout();
                 break;
             case 9:
                 quitApplication();
@@ -156,7 +163,10 @@ public class BibliotecaApp {
 
     private static void displayListOfCheckedOutCompositions() {
         showHeaderForBookings();
-        libraryForBooks.printAllBookings();
+        if (login.isAdmin(loggedUser))
+            libraryForBooks.printAllBookings();
+        else
+            libraryForBooks.printBookingsByUser(loggedUser);
     }
 
     private static Map<Integer, String> options() {
@@ -167,8 +177,14 @@ public class BibliotecaApp {
         options.put(4, "List of Movies");
         options.put(5, "Checkout a movie");
         options.put(6, "Checked Out Compositions");
+        options.put(8, "Logout");
         options.put(9, "Quit");
         return options;
+    }
+
+    private static void logout() {
+        loggedUser = null;
+        showInitialPage();
     }
 
     private static void quitApplication() {
