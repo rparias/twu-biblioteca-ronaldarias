@@ -1,7 +1,6 @@
 package com.twu.biblioteca;
 
 import com.twu.biblioteca.interfaces.Composition;
-import com.twu.biblioteca.interfaces.User;
 
 public class BookImp implements Composition {
 
