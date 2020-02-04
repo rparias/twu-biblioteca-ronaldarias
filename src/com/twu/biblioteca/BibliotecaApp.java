@@ -88,6 +88,10 @@ public class BibliotecaApp {
                 displayListOfCheckedOutCompositions();
                 displayMenu();
                 break;
+            case 7:
+                displayUserInformation();
+                displayMenu();
+                break;
             case 8:
                 logout();
                 break;
@@ -174,6 +178,10 @@ public class BibliotecaApp {
             libraryForBooks.printBookingsByUser(loggedUser);
     }
 
+    private static void displayUserInformation() {
+        showMessage(loggedUser.toString());
+    }
+
     private static Map<Integer, String> options() {
         Map<Integer, String> options = new HashMap<Integer, String>();
         options.put(1, "List of Books");
@@ -182,6 +190,7 @@ public class BibliotecaApp {
         options.put(4, "List of Movies");
         options.put(5, "Checkout a movie");
         options.put(6, "Checked Out Compositions");
+        options.put(7, "User information");
         options.put(8, "Logout");
         options.put(9, "Quit");
         return options;

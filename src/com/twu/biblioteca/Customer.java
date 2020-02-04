@@ -44,6 +44,13 @@ public class Customer implements User {
     }
 
     @Override
+    public String toString() {
+        return "Name:" + name +
+                "\nEmail: " + email +
+                "\nPhone: " + phoneNumber;
+    }
+
+    @Override
     public boolean equals(Object obj) {
         User customer = (Customer) obj;
         return name.equals(customer.getName()) &&
