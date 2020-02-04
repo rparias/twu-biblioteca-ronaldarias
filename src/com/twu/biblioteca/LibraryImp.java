@@ -53,15 +53,15 @@ public class LibraryImp implements Library, Printer {
     @Override
     public void checkoutComposition(Composition composition, User user) {
         if (composition != null) {
-            changeCompositionToCheckedOut(composition);
-            bookings.add(new BookingImp(composition, user));
+            changeCompositionToCheckedOut(composition, user);
         } else {
             showUnsuccessMessageCheckout();
         }
     }
 
-    private void changeCompositionToCheckedOut(Composition composition) {
+    private void changeCompositionToCheckedOut(Composition composition, User user) {
         if (composition.isAvailable()) {
+            bookings.add(new BookingImp(composition, user));
             composition.setAvailability(false);
             showSuccessMessageCheckout();
         } else {
@@ -72,16 +72,16 @@ public class LibraryImp implements Library, Printer {
     @Override
     public void returnComposition(Composition composition, User user) {
         if (composition != null) {
-            bookings.remove(searchBookingByCompositionAndUser(composition, user));
-            changeBookToAvailable(composition);
+            changeBookToAvailable(composition, user);
         } else {
             showUnsuccessMessageReturn();
         }
     }
 
-    private void changeBookToAvailable(Composition book) {
-        if (!book.isAvailable()) {
-            book.setAvailability(true);
+    private void changeBookToAvailable(Composition composition, User user) {
+        if (!composition.isAvailable()) {
+            bookings.remove(searchBookingByCompositionAndUser(composition, user));
+            composition.setAvailability(true);
             showSuccessMessageOnReturn();
         } else {
             showUnsuccessMessageReturn();

@@ -120,7 +120,12 @@ public class BibliotecaApp {
     private static void returnBook() {
         displayListOfCheckedOutBooks();
         Composition book = libraryForBooks.enterBookName();
-        libraryForBooks.returnComposition(book, loggedUser);
+        try {
+            libraryForBooks.returnComposition(book, loggedUser);
+        } catch (Exception ex) {
+            showMessage("Incorrect book!");
+        }
+
         displayMenu();
     }
 
