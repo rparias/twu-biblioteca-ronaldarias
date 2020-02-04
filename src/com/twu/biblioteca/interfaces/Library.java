@@ -13,4 +13,5 @@ public interface Library {
     void returnComposition(Composition composition, User user);
     Composition findCompositionByName(String name);
     List<Booking> listBookingCompositions();
+    List<Booking> listBookingCompositionsByUser(User user);
 }

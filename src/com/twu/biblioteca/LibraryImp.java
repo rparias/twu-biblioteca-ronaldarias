@@ -96,12 +96,28 @@ public class LibraryImp implements Library, Printer {
         displayCompositions(listCheckedOutCompositions());
     }
 
+    public void printAllBookings() {
+        displayBookings(listBookingCompositions());
+    }
+
+    public void printBookingsByUser(User user) {
+        displayBookings(listBookingCompositionsByUser(user));
+    }
+
     public void displayCompositions(List<Composition> compositions) {
         String compositionList = "";
         for (Composition composition: compositions) {
             compositionList += composition.printCompositionInfo() + "\n";
         }
         print(compositionList);
+    }
+
+    private void displayBookings(List<Booking> bookings) {
+        String bookingList = "";
+        for (Booking booking: bookings) {
+            bookingList += booking.printCompositionAndUsername() + "\n";
+        }
+        print(bookingList);
     }
 
     @Override
@@ -128,6 +144,17 @@ public class LibraryImp implements Library, Printer {
     @Override
     public List<Booking> listBookingCompositions() {
         return bookings;
+    }
+
+    @Override
+    public List<Booking> listBookingCompositionsByUser(User user) {
+        List<Booking> bookingsByUser = new ArrayList<>();
+        for (Booking booking : bookings) {
+            if (booking.getUser().equals(user))
+                bookingsByUser.add(booking);
+        }
+
+        return bookingsByUser;
     }
 
     private Booking searchBookingByCompositionAndUser(Composition composition, User user) {

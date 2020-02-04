@@ -80,6 +80,10 @@ public class BibliotecaApp {
             case 5:
                 checkOutMovie();
                 break;
+            case 6:
+                displayListOfCheckedOutCompositions();
+                displayMenu();
+                break;
             case 9:
                 quitApplication();
                 break;
@@ -150,6 +154,11 @@ public class BibliotecaApp {
         displayMenu();
     }
 
+    private static void displayListOfCheckedOutCompositions() {
+        showHeaderForBookings();
+        libraryForBooks.printAllBookings();
+    }
+
     private static Map<Integer, String> options() {
         Map<Integer, String> options = new HashMap<Integer, String>();
         options.put(1, "List of Books");
@@ -157,6 +166,7 @@ public class BibliotecaApp {
         options.put(3, "Return a book");
         options.put(4, "List of Movies");
         options.put(5, "Checkout a movie");
+        options.put(6, "Checked Out Compositions");
         options.put(9, "Quit");
         return options;
     }
@@ -167,6 +177,10 @@ public class BibliotecaApp {
 
     private static void showMessage(String message) {
         printStream.println(message + "\n");
+    }
+
+    private static void showHeaderForBookings() {
+        printStream.printf("\n%-35s%-10s\n", "COMPOSITION", "USER");
     }
 
     private static void showHeaderBooksWithTitleAuthorAndYear() {

@@ -235,4 +235,45 @@ public class LibraryTest {
         assertThat(bookings, hasItems(booking));
         assertThat(bookings, not(hasItems(booking2)));
     }
+
+    @Test
+    public void shouldContainsAllBookings() {
+        // Given - Arrange
+        Composition book1 = new BookImp("Clean Code", "Robert Martin", 2010);
+        Composition book2 = new BookImp("TDD by Example", "Kent Beck", 2008);
+        Customer customer2 = new Customer("Veronica", "vero@hotmail.com", "0976857633", "234-5678");
+        books.add(book1);
+        books.add(book2);
+
+        // When - Act
+        library.checkoutComposition(book1, customer);
+        library.checkoutComposition(book2, customer2);
+        Booking booking = new BookingImp(book1, customer);
+        Booking booking2 = new BookingImp(book2, customer2);
+        List<Booking> bookings = library.listBookingCompositions();
+
+        // Then - Assert
+        assertThat(bookings, hasItems(booking, booking2));
+    }
+
+    @Test
+    public void shouldContainsOnlyBookingsByUser() {
+        // Given - Arrange
+        Composition book1 = new BookImp("Clean Code", "Robert Martin", 2010);
+        Composition book2 = new BookImp("TDD by Example", "Kent Beck", 2008);
+        Customer customer2 = new Customer("Veronica", "vero@hotmail.com", "0976857633", "234-5678");
+        books.add(book1);
+        books.add(book2);
+
+        // When - Act
+        library.checkoutComposition(book1, customer);
+        library.checkoutComposition(book2, customer2);
+        Booking booking = new BookingImp(book1, customer);
+        Booking booking2 = new BookingImp(book2, customer2);
+        List<Booking> bookings = library.listBookingCompositionsByUser(customer2);
+
+        // Then - Assert
+        assertThat(bookings, hasItems(booking2));
+        assertThat(bookings, not(hasItems(booking)));
+    }
 }

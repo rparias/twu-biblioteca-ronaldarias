@@ -5,5 +5,7 @@ import com.twu.biblioteca.Customer;
 import java.util.List;
 
 public interface Booking {
-    List<String> getAllBookings();
+    Composition getComposition();
+    User getUser();
+    String printCompositionAndUsername();
 }
