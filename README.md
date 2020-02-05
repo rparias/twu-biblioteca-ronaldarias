@@ -1,6 +1,13 @@
 # Repository for TWU
 
-Instructions to push your code to code.google.com
+### Assignment 1 link:
+https://github.com/rparias/twu-biblioteca-ronaldarias/tree/46e2e0582c9efd01cd6155b122d3c55b64939265
+### Assignment 2 link:
+https://github.com/rparias/twu-biblioteca-ronaldarias/tree/ae6613fe16e83882f9c91f6a5a5b1f3916b896f8
+### Assignment 3 link:
+https://github.com/rparias/twu-biblioteca-ronaldarias/tree/41021fe826b7c6ce6a6674dfd91a53ed51b6da25
+
+###### Instructions to push your code to code.google.com
 =================================================
 1. Sign into GitHub and create a new repository
         Repository name: twu-biblioteca-yourname
